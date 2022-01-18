@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const auth = require('../middlewares/authorization');
 const admin = require('../middlewares/adminRole');
-const { createProduct, getProductById, getProducts, updateProductById, getPhoto } = require('../controllers/productController');
+const { createProduct, getProductById, getProducts, updateProductById, getPhoto, filterProducts } = require('../controllers/productController');
 
 
 router.route('/')
@@ -15,4 +15,6 @@ router.route('/:id')
 
 router.route('/photo/:id')
     .get(getPhoto)
+router.route('/filter')
+    .post(filterProducts)
 module.exports = router
