@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const auth = require('../middlewares/authorization');
 const admin = require('../middlewares/adminRole');
-const { createProduct, getProductById, getProducts, updateProductById } = require('../controllers/productController');
+const { createProduct, getProductById, getProducts, updateProductById, getPhoto } = require('../controllers/productController');
 
 
 router.route('/')
@@ -11,4 +11,8 @@ router.route('/')
 
 router.route('/:id')
     .get(getProductById)
-    .put([auth, admin], updateProductById)
+    .put([auth, admin], updateProductById);
+
+router.route('/photo/:id')
+    .get(getPhoto)
+module.exports = router

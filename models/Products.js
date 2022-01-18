@@ -11,7 +11,7 @@ const ProductSchema = Schema({
        required : true,
    },
    quantity : Number,
-   product_image :{
+   photo :{
        data: Buffer,
        contentType : String
 
@@ -21,7 +21,8 @@ const validateProduct = product => {
     const schema = joi.object({
         name: joi.string().min(3).max(200).required(),
         description:joi.string().min(3).max(5000).required(),
-        price : joi.Number().min(3).max(100).required(),
+        price : joi.number().required(),
+        quantity: joi.string().required(),
         category : joi.string().min(3).max(200).required(),
 
     })
