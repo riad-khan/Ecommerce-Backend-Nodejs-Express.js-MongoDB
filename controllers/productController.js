@@ -32,10 +32,8 @@ module.exports.createProduct = async (req, res) => {
 }
 module.exports.getProducts = async (req, res) => {
 
-    const products = await Product.find().select({ photo: 0 }).populate('category name');
-    return res.status(200).send({
-        data: products
-    })
+    const products = await Product.find().select({ photo: 0 }).sort().populate('category name');
+    return res.status(200).send(products)
 }
 
 
@@ -44,9 +42,7 @@ module.exports.getProductById = async (req, res) => {
     const product_id = req.params.id;
     const product = await Product.findById(product_id).select({ photo: 0 }).populate('category name');
     if (!product) res.status(404).send("Not found");
-    return res.status(200).send({
-        data: product
-    })
+    return res.status(200).send( product)
 }
 
 module.exports.getPhoto = async (req, res) => {
@@ -123,7 +119,7 @@ module.exports.filterProducts = async (req, res) => {
 
     const products = await Product.find(args)
         .select({ photo: 0 })
-        .populate('category', 'name')
+        .populate('category','name')
         .sort({ [sortBy]: order })
         .skip(skip)
         .limit(limit)

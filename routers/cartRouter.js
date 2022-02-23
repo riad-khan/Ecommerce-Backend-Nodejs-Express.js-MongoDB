@@ -10,4 +10,6 @@ router.route('/')
     .put(auth, updateCart)
 
 router.route('/:id')
-    .delete(auth, DeleteCart)
+    .delete(auth, DeleteCart);
+
+    module.exports = router
