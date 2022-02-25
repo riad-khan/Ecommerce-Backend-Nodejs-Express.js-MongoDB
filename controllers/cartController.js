@@ -33,11 +33,13 @@ module.exports.getCartProducts = async (req, res) => {
 module.exports.updateCart = async (req, res) => {
     let { _id, count } = _.pick(req.body, ['_id', 'count']);
     const cartUpdate = await Cart.updateMany({ _id: _id, user: req.user.id }, { count: count });
-    res.status(201).send("cart updated successfully");
+    res.status(201).send({
+        message: "cart updated Successfully"
+    });
 }
 module.exports.DeleteCart = async (req, res) => {
     const id = req.params.id;
     const userId = req.body.user;
-    const deleteCart = await Cart.deleteOne({ _id: id, user: userId })
-    res.status(201).send("cart deleted successfully");
+    const deleteCart = await Cart.deleteOne({ _id: id, user : req.user.id })
+    res.status(201).send("Product removed from cart");
 }
