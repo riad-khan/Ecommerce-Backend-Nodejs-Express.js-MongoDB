@@ -3,12 +3,13 @@ dotenv.config();
 const app = require('./app');
 const mongoose = require('mongoose');
 
-mongoose.connect(process.env.MONGODB_LOCAL_URL)
+const DB = process.env.MONGODB_URL.replace('<PASSWORD>',process.env.DB_PASSWORD)
+mongoose.connect(DB)
 .then(()=>{
     console.log("database connected successfully")
 })
 .catch(error =>{
-    console.log("Db connection Failed")
+    console.log(error)
 })
 
 const port = process.env.PORT || 3001;
