@@ -4,6 +4,7 @@ const productRouters = require('./routers/productRouter');
 const CartRouters = require('./routers/cartRouter');
 const ProfileRouters = require('./routers/Profile');
 const PaymentRouter = require('./routers/paymentRouter');
+const OrderRouter = require('./routers/orderRouter');
 
 module.exports = (app)=>{
    
@@ -12,5 +13,6 @@ module.exports = (app)=>{
     app.use('/api/product',productRouters);
     app.use('/api/cart',CartRouters);
     app.use('/api/profile',ProfileRouters);
-    app.use('/api/payment',PaymentRouter)
+    app.use('/api/payment',PaymentRouter);
+    app.use('/api/orders',OrderRouter)
 }

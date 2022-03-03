@@ -27,6 +27,8 @@ module.exports.getCartProducts = async (req, res) => {
         .populate('product', 'name')
         .populate('user', 'name');
 
+
+        
     res.status(200).send(item);
 }
 

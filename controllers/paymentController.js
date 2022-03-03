@@ -1,9 +1,27 @@
 
 const { Cart } = require("../models/Cart");
 const { Profile } = require("../models/Profile");
+const{Order} = require('../models/Order');
+const{Payment} = require('../models/Payment');
+const path = require('path');
 
 const PaymentSession = require("ssl-commerz-node").PaymentSession;
 require("dotenv").config();
+
+module.exports.ipn = async(req,res) =>{
+   const payment = new Payment(req.body);
+   const tran_id = payment['tran_id'];
+   if(payment['status'] === "VALID"){
+       const order = await Order.updateOne({tran_id : tran_id},{paymentStatus : 'complete'});
+       await Cart.deleteMany(order.cartItems);
+   }else{
+       await Order.deleteOne({tran_id : tran_id});
+   }
+   await payment.save();
+     return res.status(201).send('IPN message saved');
+
+
+}
 
 module.exports.initPayment = async (req, res) => {
     const cartItem = await Cart.find({ user: req.user.id })
@@ -23,10 +41,10 @@ module.exports.initPayment = async (req, res) => {
 
     // Set the urls
     payment.setUrls({
-        success: "yoursite.com/success", // If payment Succeed
+        success: "https://dry-atoll-52624.herokuapp.com/api/payment/success", // If payment Succeed
         fail: "yoursite.com/fail", // If payment failed
         cancel: "yoursite.com/cancel", // If user cancel payment
-        ipn: "yoursite.com/ipn", // SSLCommerz will send http post request in this link
+        ipn: "https://dry-atoll-52624.herokuapp.com/api/payment/ipn", // SSLCommerz will send http post request in this link
     });
 
     // Set order details
@@ -70,5 +88,18 @@ module.exports.initPayment = async (req, res) => {
     });
 
   response = await payment.paymentInit();
+  const order = new Order({cartItems : cartItem, user: req.user.id, tran_id : transectionId, address : profile});
+  if(response.status === "SUCCESS"){
+      order.sessionId = response['sessionkey'];
+      await order.save();
+  }
   return res.status(200).send(response)
+}
+
+module.exports.PaymentSuccess = async (req, res) =>{
+    res.sendFile(path.join(__basedir + "/public/success.html"))
+}
+
+module.exports.verify = async(req, res) =>{
+  
 }
