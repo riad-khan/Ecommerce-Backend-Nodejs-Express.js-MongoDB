@@ -18,9 +18,16 @@ const userSchema = Schema({
     },
     password : {
         type: String,
-        required: true,
         minlength :6,
         maxlength: 1024,
+    },
+    googleId : {
+        type :String,
+        default: '0'
+    },
+    facebookId:{
+        type : String,
+        default:'0',
     },
     role :{
         type: String,

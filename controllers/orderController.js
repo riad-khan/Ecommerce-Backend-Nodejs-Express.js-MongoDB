@@ -1,5 +1,7 @@
-const {Order} = require('../models/Order');
+const { Order } = require('../models/Order');
 
-module.exports.orders = async(req, res) =>{
-   console.log(req.user.id);
+
+module.exports.orders = async (req, res) => {
+    const cartItems = await Order.find({ user: req.user.id })
+    return res.status(201).send(cartItems)
 }

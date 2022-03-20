@@ -19,7 +19,13 @@ const ProfileSchema = Schema({
         data: Buffer,
         contentType : String
  
-    }
+    },
+    ProfileStatus: {
+        type : String,
+        enum : ["pending","complete"],
+        default : "complete"
+    },
+    
 })
 const validateProfile = profile =>{
     const schema = joi.object({

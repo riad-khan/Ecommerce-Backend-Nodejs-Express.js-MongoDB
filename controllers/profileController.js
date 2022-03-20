@@ -24,7 +24,9 @@ module.exports.addProfile = async (req, res) => {
             address: fields.address,
             city: fields.city,
             postCode: fields.postCode,
-            userId: req.user.id
+            userId: req.user.id,
+           
+            
         });
         if (files.photo) {
             fs.readFile(files.photo.path, (err, data) => {
@@ -35,6 +37,11 @@ module.exports.addProfile = async (req, res) => {
                     if (err) return res.status(500).send(err)
                     else return res.status(201).send("Profile created Successfully")
                 })
+            })
+        }else{
+            profile.save((err, result) => {
+                if (err) return res.status(500).send(err)
+                else return res.status(201).send("Profile created Successfully")
             })
         }
     })
